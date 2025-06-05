@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-16px) scale(1.05); }
+}
+@keyframes float-slower {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(12px) scale(0.97); }
+}
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+.animate-float-slower {
+  animation: float-slower 8s ease-in-out infinite;
+}
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 4s ease-in-out infinite;
+}
+
+/* Futuristic border glow for hero card */
+@keyframes border-glow {
+  0%, 100% { box-shadow: 0 0 0 0 #60a5fa44, 0 0 0 0 #a78bfa44; }
+  50% { box-shadow: 0 0 24px 8px #60a5fa66, 0 0 32px 16px #a78bfa66; }
+}
+.animate-border-glow {
+  animation: border-glow 3.5s ease-in-out infinite;
+}
+
+/* Avatar glow and pulse */
+@keyframes avatar-glow {
+  0%, 100% { box-shadow: 0 0 0 0 #a78bfa44, 0 0 0 0 #60a5fa44; }
+  50% { box-shadow: 0 0 32px 8px #a78bfa88, 0 0 48px 16px #60a5fa88; }
+}
+.animate-avatar-glow {
+  animation: avatar-glow 4s ease-in-out infinite;
+}
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 3.5s ease-in-out infinite;
+}
+
+/* Typewriter effect for hero title/tagline */
+.typewriter {
+  display: inline-block;
+  overflow: hidden;
+  border-right: 2px solid #60a5fa;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  max-width: 100vw;
+}
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes blink-caret {
+  0%, 100% { border-color: #60a5fa; }
+  50% { border-color: transparent; }
+}
+
+/* Tooltip styles */
+.skill-tooltip {
+  @apply absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-1 rounded bg-gray-900 text-white text-xs shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-nowrap z-50;
+}
+.dark .skill-tooltip {
+  @apply bg-gray-100 text-gray-900;
+}
+
+.loader {
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #60a5fa;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
