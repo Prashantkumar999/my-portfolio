@@ -34,14 +34,24 @@ function App() {
     <div className="min-h-screen font-sans overflow-x-hidden transition-colors duration-500 bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
       <button
         aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-        className="fixed top-6 right-6 z-50 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg border border-gray-200 dark:border-gray-700 hover:scale-110 transition-all"
+        className="fixed top-6 right-6 z-50 w-14 h-8 flex items-center bg-white/80 dark:bg-gray-800/80 shadow-lg border border-gray-200 dark:border-gray-700 rounded-full px-1 transition-all duration-300 focus:outline-none"
         onClick={() => setDark((d) => !d)}
       >
-        {dark ? (
-          <svg className="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1zm5.657 3.343a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707zM21 11a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1zm-2.343 7.657a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 1 1 1.414-1.414l.707.707zM12 19a1 1 0 0 1-1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 1-1 1zm-7.657-3.343a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707zM3 13a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2H3zm2.343-7.657a1 1 0 0 1 1.414-1.414l.707.707A1 1 0 1 1 6.05 6.464l-.707-.707z"/></svg>
-        ) : (
-          <svg className="w-6 h-6 text-gray-700 dark:text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M21.64 13.064A9 9 0 0 1 11.07 2.36a1 1 0 0 0-1.13 1.32A7 7 0 0 0 12 21a7 7 0 0 0 9.32-8.44 1 1 0 0 0-1.68-.496z"/></svg>
-        )}
+        <span className={`w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300 ${dark ? 'translate-x-6 bg-yellow-400' : 'translate-x-0 bg-blue-500'}`}
+          style={{ boxShadow: dark ? '0 0 8px #facc15' : '0 0 8px #3b82f6' }}
+        >
+          {dark ? (
+            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.75 15.5A6.75 6.75 0 0 1 8.5 6.25a.75.75 0 0 0-.75-.75A7.5 7.5 0 1 0 18 16.25a.75.75 0 0 0-.25-1.5z"/></svg>
+          ) : (
+            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.75a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm5.657 3.093a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707zM19.25 12a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1zm-2.343 5.157a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 1 1 1.414-1.414l.707.707zM12 19.25a1 1 0 0 1-1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 1-1 1zm-5.657-3.093a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707zM4.75 12a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2h-1zm2.343-5.157a1 1 0 0 1 1.414-1.414l.707.707A1 1 0 1 1 8.8 8.05l-.707-.707z"/></svg>
+          )}
+        </span>
+        <span className="absolute left-2 text-yellow-400 transition-opacity duration-300" style={{ opacity: dark ? 0 : 1 }}>
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.75a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm5.657 3.093a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707zM19.25 12a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1zm-2.343 5.157a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 1 1 1.414-1.414l.707.707zM12 19.25a1 1 0 0 1-1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 1-1 1zm-5.657-3.093a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707zM4.75 12a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2h-1zm2.343-5.157a1 1 0 0 1 1.414-1.414l.707.707A1 1 0 1 1 8.8 8.05l-.707-.707z"/></svg>
+        </span>
+        <span className="absolute right-2 text-blue-500 transition-opacity duration-300" style={{ opacity: dark ? 1 : 0 }}>
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.75 15.5A6.75 6.75 0 0 1 8.5 6.25a.75.75 0 0 0-.75-.75A7.5 7.5 0 1 0 18 16.25a.75.75 0 0 0-.25-1.5z"/></svg>
+        </span>
       </button>
       <motion.section
         initial={{ opacity: 0, y: -40 }}
