@@ -7,7 +7,6 @@ import techshotImg from './images/techshot-home.png';
 import profileImg from './images/profile-1.jpg';
 
 function App() {
-  // Dark mode state
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -25,7 +24,6 @@ function App() {
     }
   }, [dark]);
 
-  // Add sticker SVGs
   const devSticker = "https://unpkg.com/undraw@latest/undraw_programming_re_kg9v.svg";
   const gradCapSticker = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f393.svg";
   const rocketSticker = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f680.svg";
@@ -34,7 +32,6 @@ function App() {
 
   return (
     <div className="min-h-screen font-sans overflow-x-hidden transition-colors duration-500 bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
-      {/* Dark mode toggle */}
       <button
         aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
         className="fixed top-6 right-6 z-50 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg border border-gray-200 dark:border-gray-700 hover:scale-110 transition-all"
@@ -46,36 +43,30 @@ function App() {
           <svg className="w-6 h-6 text-gray-700 dark:text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M21.64 13.064A9 9 0 0 1 11.07 2.36a1 1 0 0 0-1.13 1.32A7 7 0 0 0 12 21a7 7 0 0 0 9.32-8.44 1 1 0 0 0-1.68-.496z"/></svg>
         )}
       </button>
-      {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
         className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 via-white to-blue-200 dark:from-gray-900 dark:to-gray-800 dark:bg-gradient-to-b text-gray-900 dark:text-white px-2 sm:px-4 py-8 sm:py-16 overflow-hidden shadow-xl rounded-b-3xl"
       >
-        {/* Animated gradient background overlay */}
         <div className="absolute inset-0 bg-gradient-to-tr from-blue-200/40 via-purple-200/30 to-blue-100/40 animate-gradient-x z-0 dark:from-blue-900/40 dark:via-purple-900/30 dark:to-blue-800/40" />
-        {/* Animated particles (optional, subtle) */}
         <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none" style={{ opacity: 0.10 }} width="100%" height="100%" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
           {[...Array(18)].map((_, i) => (
             <circle key={i} cx={80 + i * 75} cy={100 + (i % 2) * 200} r="2.5" fill="#60a5fa" opacity="0.5" />
           ))}
         </svg>
-        {/* Hero background image (replace src with your own for custom background) */}
         <img
           src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80"
           alt="Background"
           className="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm z-0 pointer-events-none select-none dark:opacity-30"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-blue-100/80 z-0 dark:from-gray-900/90 dark:via-transparent dark:to-gray-900/80" />
-        {/* Floating tech icons - now orbiting/floating with glow */}
         <motion.div className="absolute top-1/2 left-1/2 z-10" style={{ transform: 'translate(-50%, -50%)' }}>
           <motion.div
             className="relative w-40 h-40 sm:w-72 sm:h-72"
             animate={{ rotate: [0, 360] }}
             transition={{ repeat: Infinity, duration: 18, ease: 'linear' }}
           >
-            {/* Orbiting icons */}
             {[
               { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', style: 'top-0 left-1/2 -translate-x-1/2', delay: 0 },
               { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', style: 'top-1/4 right-0 -translate-y-1/2', delay: 0.2 },
@@ -100,7 +91,6 @@ function App() {
             ))}
           </motion.div>
         </motion.div>
-        {/* Avatar with 3D/holographic effect */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -114,7 +104,6 @@ function App() {
             className="w-24 h-24 sm:w-36 sm:h-36 rounded-full border-4 border-white dark:border-gray-800 shadow-2xl object-cover bg-white/70 dark:bg-white/40 relative z-10 animate-avatar-glow"
           />
         </motion.div>
-        {/* Glassmorphism card for name/title with animated border */}
         <motion.div
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -129,7 +118,6 @@ function App() {
           >
             Prashant Kumar
           </motion.h1>
-          {/* Typewriter/animated text for title/tagline */}
           <motion.h2
             className="text-lg sm:text-2xl md:text-3xl font-medium mb-2 sm:mb-4 bg-blue-100/60 dark:bg-gray-800/40 px-3 sm:px-6 py-2 rounded-full shadow-lg backdrop-blur-md text-blue-900 dark:text-blue-200 text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -138,7 +126,6 @@ function App() {
           >
             <span className="typewriter">Full-Stack Developer | MERN</span>
           </motion.h2>
-          {/* Add subtitle/tagline below name/title */}
           <motion.p
             className="text-base sm:text-lg md:text-xl font-medium text-blue-700 dark:text-blue-200 mt-2 mb-4 sm:mb-6 text-center max-w-xs sm:max-w-xl"
             initial={{ opacity: 0, y: 10 }}
@@ -163,12 +150,9 @@ function App() {
           </div>
           <motion.a href="#contact" className="underline hover:text-blue-700 dark:hover:text-blue-200 transition text-lg mt-2 text-center" whileHover={{ scale: 1.1 }}>Contact Me</motion.a>
         </motion.div>
-        {/* Animated background shapes */}
         <motion.div className="absolute -top-32 -left-32 w-60 h-60 sm:w-96 sm:h-96 bg-purple-200/30 rounded-full blur-3xl z-0 animate-spin-slow dark:bg-purple-400/30" />
         <motion.div className="absolute -bottom-32 -right-32 w-60 h-60 sm:w-96 sm:h-96 bg-blue-100/30 rounded-full blur-3xl z-0 animate-spin-slow dark:bg-blue-300/30" />
       </motion.section>
-
-      {/* About Section */}
       <motion.section
         id="about"
         initial={{ opacity: 0, x: -60 }}
@@ -177,15 +161,12 @@ function App() {
         transition={{ duration: 0.8 }}
         className="max-w-3xl mx-auto py-16 px-4"
       >
-        {/* About section header with sticker */}
         <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mb-4 text-center sm:text-left">
           <img src={devSticker} alt="Developer Sticker" className="w-10 h-10 sm:w-10 sm:h-10 opacity-80 select-none mb-2 sm:mb-0" />
           <h3 className="text-2xl sm:text-3xl font-bold text-blue-700 dark:text-blue-300">About Me</h3>
         </div>
         <p className="text-lg leading-relaxed bg-white/70 dark:bg-gray-900/70 dark:text-gray-100 rounded-xl p-6 shadow-lg">Full-stack developer with hands-on experience in the MERN stack, HTML, CSS, and Tailwind CSS. Passionate about solving complex problems, building user-friendly applications, and continuously learning new technologies. Strong understanding of both front-end and back-end development with a focus on writing clean, maintainable code.</p>
       </motion.section>
-
-      {/* Skills Section */}
       <motion.section
         id="skills"
         initial={false}
@@ -194,7 +175,6 @@ function App() {
         transition={{ duration: 0.8 }}
         className="max-w-4xl mx-auto py-16 px-4"
       >
-        {/* Skills section header with sticker */}
         <div className="flex items-center gap-3 mb-8">
           <img src={rocketSticker} alt="Rocket Sticker" className="w-10 h-10 opacity-80 select-none" />
           <h3 className="text-3xl font-bold text-blue-400">Skills</h3>
@@ -244,8 +224,6 @@ function App() {
           ))}
         </motion.div>
       </motion.section>
-
-      {/* Projects Section */}
       <motion.section
         id="projects"
         initial={false}
@@ -254,7 +232,6 @@ function App() {
         transition={{ duration: 0.8 }}
         className="max-w-5xl mx-auto py-16 px-4"
       >
-        {/* Projects section header with sticker */}
         <div className="flex items-center gap-3 mb-8">
           <img src={projectSticker} alt="Project Sticker" className="w-10 h-10 opacity-80 select-none" />
           <h3 className="text-3xl font-bold text-blue-400">Projects</h3>
@@ -266,7 +243,6 @@ function App() {
           transition={{ staggerChildren: 0.12, delayChildren: 0.2 }}
           className="grid gap-10 md:grid-cols-2"
         >
-          {/* Project 1 */}
           <motion.div
             whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
             className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
@@ -280,7 +256,6 @@ function App() {
             <a href="https://smart-strokes.vercel.app" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-semibold">Live Site</a>
             <motion.div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-200/40 dark:bg-blue-900/40 rounded-full blur-2xl z-0 group-hover:scale-125 transition-transform" />
           </motion.div>
-          {/* Project 2 */}
           <motion.div
             whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
             className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
@@ -294,7 +269,6 @@ function App() {
             <a href="https://masalaflix.vercel.app" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-semibold">Live Site</a>
             <motion.div className="absolute -bottom-10 -left-10 w-32 h-32 bg-yellow-200/40 dark:bg-yellow-900/40 rounded-full blur-2xl z-0 group-hover:scale-125 transition-transform" />
           </motion.div>
-          {/* Project 3 */}
           <motion.div
             whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
             className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
@@ -310,8 +284,6 @@ function App() {
           </motion.div>
         </motion.div>
       </motion.section>
-
-      {/* Education Section */}
       <motion.section
         id="education"
         initial={{ opacity: 0, x: -60 }}
@@ -320,7 +292,6 @@ function App() {
         transition={{ duration: 0.8 }}
         className="max-w-3xl mx-auto py-16 px-4"
       >
-        {/* Education section header with sticker */}
         <div className="flex items-center gap-3 mb-8">
           <img src={gradCapSticker} alt="Graduation Cap Sticker" className="w-10 h-10 opacity-80 select-none" />
           <h3 className="text-3xl font-bold text-blue-400">Education</h3>
@@ -344,8 +315,6 @@ function App() {
           </motion.div>
         </div>
       </motion.section>
-
-      {/* Certificate Section */}
       <motion.section
         id="certificates"
         initial={{ opacity: 0, y: 60 }}
@@ -354,13 +323,11 @@ function App() {
         transition={{ duration: 0.8 }}
         className="max-w-4xl mx-auto py-16 px-4"
       >
-        {/* Certificates section header with sticker */}
         <div className="flex items-center gap-3 mb-8">
           <img src={certSticker} alt="Certificate Sticker" className="w-10 h-10 opacity-80 select-none" />
           <h3 className="text-3xl font-bold text-blue-400">Certificates</h3>
         </div>
         <div className="grid gap-8 md:grid-cols-2">
-          {/* Web Development Course — Love Babbar */}
           <motion.div
             whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(96, 165, 250, 0.18)' }}
             initial={{ opacity: 0, y: 40 }}
@@ -375,14 +342,11 @@ function App() {
             </div>
             <span className="text-sm text-gray-200">Successfully completed a comprehensive Web Development course.</span>
             <span className="text-xs text-gray-400">Issued: 2024</span>
-            {/* Certificate image (optional, placeholder) */}
             <img src="https://img.freepik.com/free-vector/certificate-concept-illustration_114360-4947.jpg?w=826&t=st=1680000000~exp=1680003600~hmac=placeholder" alt="Certificate" className="w-full h-32 object-contain rounded-lg bg-gray-800 my-2" />
             <a href="https://drive.google.com/file/d/14mpyAomABZ1IbjCpGNSRiCHtxQuC0MTi/view" target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-400 underline hover:text-blue-300 font-semibold">View Certificate</a>
           </motion.div>
         </div>
       </motion.section>
-
-      {/* Contact Section */}
       <motion.section
         id="contact"
         initial={{ opacity: 0, y: 60 }}
