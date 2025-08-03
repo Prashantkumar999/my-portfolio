@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import smartStrokesImg from './images/smartStrokes-homepage.png';
 import masalaflixImg from './images/masalaflix-home.png';
 import techshotImg from './images/techshot-home.png';
+import clothzyStoreImg from './images/clothzy-1.png';
 import profileImg from './images/profile-1.jpg';
 
 function App() {
@@ -253,6 +254,19 @@ function App() {
           transition={{ staggerChildren: 0.12, delayChildren: 0.2 }}
           className="grid gap-10 md:grid-cols-2"
         >
+          <motion.div
+            whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
+            className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
+          >
+            <div className="w-full h-48 bg-gradient-to-tr from-purple-200 to-pink-200 dark:from-purple-900 dark:to-pink-900 rounded-2xl mb-4 flex items-center justify-center overflow-hidden">
+              <img src={clothzyStoreImg} alt="Clothzy Store" className="object-cover w-full h-full" />
+            </div>
+            <h4 className="text-xl font-bold mb-2 text-blue-800 dark:text-blue-200">Clothzy Store</h4>
+            <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">Full-stack developer | React.js, Redux, Node.js, Express.js, MongoDB, JWT, bcrypt</p>
+            <p className="mb-4 text-center dark:text-gray-100">A complete MERN stack e-commerce platform with user authentication, admin panel, shopping cart, and order management.</p>
+            <a href="https://clothzy-store.vercel.app" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-semibold">Live Site</a>
+            <motion.div className="absolute -top-10 -right-10 w-32 h-32 bg-purple-200/40 dark:bg-purple-900/40 rounded-full blur-2xl z-0 group-hover:scale-125 transition-transform" />
+          </motion.div>
           <motion.div
             whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
             className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
