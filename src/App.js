@@ -1,16 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import { motion } from 'framer-motion';
+import clothzyStoreImg from './images/clothzy-1.png';
 import smartStrokesImg from './images/smartStrokes-homepage.png';
 import masalaflixImg from './images/masalaflix-home.png';
 import techshotImg from './images/techshot-home.png';
-import clothzyStoreImg from './images/clothzy-1.png';
 import profileImg from './images/profile-1.jpg';
+
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.4 },
+  transition: { duration: 0.6, ease: 'easeOut' },
+};
+
+const SkillBadge = ({ label }) => (
+  <span className="inline-flex items-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-200">
+    {label}
+  </span>
+);
 
 function App() {
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return (
+        localStorage.getItem('theme') === 'dark' ||
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      );
     }
     return false;
   });
@@ -25,376 +41,443 @@ function App() {
     }
   }, [dark]);
 
-  const devSticker = "https://unpkg.com/undraw@latest/undraw_programming_re_kg9v.svg";
-  const gradCapSticker = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f393.svg";
-  const rocketSticker = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f680.svg";
-  const projectSticker = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4bb.svg";
-  const certSticker = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3c6.svg";
+  const skillGroups = useMemo(
+    () => [
+      {
+        title: 'Languages & Frameworks',
+        skills: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS'],
+      },
+      {
+        title: 'Tools & Platforms',
+        skills: ['Git', 'GitHub', 'VS Code', 'REST APIs', 'JWT Authentication', 'AI Integration'],
+      },
+      {
+        title: 'Deployment',
+        skills: ['Vercel', 'Render'],
+      },
+    ],
+    []
+  );
+
+  const education = useMemo(
+    () => [
+      {
+        institution: 'Aligarh College of Engineering and Technology, Aligarh',
+        program: 'B.Tech in Computer Science',
+        period: '2019 — 2023',
+        detail: 'CGPA: 7.8',
+      },
+      {
+        institution: 'Agrasen Inter College, Aligarh',
+        program: '12th Grade — 70%',
+        period: '2018',
+      },
+      {
+        institution: 'Agrasen Inter College, Aligarh',
+        program: '10th Grade — 76%',
+        period: '2016',
+      },
+    ],
+    []
+  );
+
+  const projects = useMemo(
+    () => [
+      {
+        title: 'Clothzy Store',
+        description:
+          'A MERN stack e-commerce clothing platform that supports user browsing, cart management, order placement, and an admin panel for inventory and orders.',
+        image: clothzyStoreImg,
+        liveUrl: 'https://clothzy-store.vercel.app/',
+        repoUrl: 'https://github.com/Prashantkumar999/clothzyStore',
+        stack: ['React.js', 'Redux Toolkit', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
+        features: [
+          'Customer authentication and protected routes',
+          'Cart and order workflows with responsive UI',
+          'Admin dashboard for product and order management',
+        ],
+        credentials: {
+          email: 'clothzystore@gmail.com',
+          password: '123456',
+        },
+      },
+      {
+        title: 'Smart Strokes',
+        description:
+          'An AI-enhanced typing platform that analyses character-level mistakes and generates targeted practice content to improve accuracy.',
+        image: smartStrokesImg,
+        liveUrl: 'https://smart-strokes.vercel.app',
+        repoUrl: 'https://github.com/Prashantkumar999/Smart-Strokes',
+        stack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'OpenAI API'],
+        features: ['Mistake detection and analytics', 'Dynamic content generation using AI', 'Responsive design for all devices'],
+      },
+      {
+        title: 'MasalaFlix',
+        description:
+          'A responsive movie streaming front-end that lets users browse, search, and explore films with trailers and ratings using the TMDB API.',
+        image: masalaflixImg,
+        liveUrl: 'https://masalaflix.vercel.app',
+        repoUrl: 'https://github.com/Prashantkumar999/MasalaFlix',
+        stack: ['React.js', 'Tailwind CSS', 'TMDB API'],
+        features: ['Search and filter functionality', 'Trailer popups and responsive grid layout', 'Integration with TMDB for live data'],
+      },
+      {
+        title: 'MERN Blog App',
+        description:
+          'A secure blogging platform with user authentication, role-based access, and CRUD support for managing blog content.',
+        image: techshotImg,
+        liveUrl: 'https://techshot-c9qe.onrender.com',
+        repoUrl: 'https://github.com/Prashantkumar999/techshot-blog',
+        stack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
+        features: ['JWT authentication and role support', 'Rich text editor for blogs', 'REST API architecture'],
+      },
+    ],
+    []
+  );
 
   return (
-    <div className="min-h-screen font-sans overflow-x-hidden transition-colors duration-500 bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
+    <div className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 transition-colors duration-500 ease-out dark:bg-slate-950 dark:text-slate-100">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -left-24 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-500/20" />
+        <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-purple-300/30 blur-3xl dark:bg-purple-600/20" />
+        <div className="absolute inset-x-0 top-1/3 h-px bg-gradient-to-r from-transparent via-slate-200/60 to-transparent dark:via-slate-700/40" />
+      </div>
+
       <button
         aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-        className="fixed top-6 right-6 z-50 w-14 h-8 flex items-center bg-white/80 dark:bg-gray-800/80 shadow-lg border border-gray-200 dark:border-gray-700 rounded-full px-1 transition-all duration-300 focus:outline-none"
+        className="fixed top-6 right-6 z-50 flex h-10 w-24 items-center justify-between rounded-full border border-slate-200 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500 shadow-lg backdrop-blur transition dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300"
         onClick={() => setDark((d) => !d)}
       >
-        <span className={`w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300 ${dark ? 'translate-x-6 bg-yellow-400' : 'translate-x-0 bg-blue-500'}`}
-          style={{ boxShadow: dark ? '0 0 8px #facc15' : '0 0 8px #3b82f6' }}
+        <span className="text-center">{dark ? 'Dark' : 'Light'}</span>
+        <span
+          className={`inline-flex h-8 w-8 min-w-[2rem] items-center justify-center rounded-full border border-white/40 bg-gradient-to-br text-white shadow-md transition ${
+            dark ? 'from-blue-500 to-indigo-500' : 'from-amber-500 to-orange-500'
+          }`}
         >
           {dark ? (
-            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.75 15.5A6.75 6.75 0 0 1 8.5 6.25a.75.75 0 0 0-.75-.75A7.5 7.5 0 1 0 18 16.25a.75.75 0 0 0-.25-1.5z"/></svg>
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 1 0 21 12.79z" />
+            </svg>
           ) : (
-            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.75a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm5.657 3.093a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707zM19.25 12a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1zm-2.343 5.157a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 1 1 1.414-1.414l.707.707zM12 19.25a1 1 0 0 1-1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 1-1 1zm-5.657-3.093a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707zM4.75 12a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2h-1zm2.343-5.157a1 1 0 0 1 1.414-1.414l.707.707A1 1 0 1 1 8.8 8.05l-.707-.707z"/></svg>
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 4a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V5a1 1 0 0 1 1-1zm0 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8-4h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2zM5 12a1 1 0 0 1-1 1H3a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1zm13.657 6.657-1.06-1.06a1 1 0 0 1 1.414-1.415l1.06 1.061a1 1 0 0 1-1.414 1.414zM6.404 6.404 5.343 5.343A1 1 0 1 1 6.757 3.93l1.06 1.06a1 1 0 0 1-1.413 1.415zM18.657 5.343l-1.06 1.06A1 1 0 1 1 16.182 4.99l1.06-1.061A1 1 0 0 1 18.657 5.343zM7.464 19.657l-1.06 1.06A1 1 0 1 1 5 19.303l1.06-1.06a1 1 0 0 1 1.414 1.414zM12 19a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1z" />
+            </svg>
           )}
         </span>
-        <span className="absolute left-2 text-yellow-400 transition-opacity duration-300" style={{ opacity: dark ? 0 : 1 }}>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.75a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm5.657 3.093a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707zM19.25 12a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1zm-2.343 5.157a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 1 1 1.414-1.414l.707.707zM12 19.25a1 1 0 0 1-1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 1-1 1zm-5.657-3.093a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707zM4.75 12a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2h-1zm2.343-5.157a1 1 0 0 1 1.414-1.414l.707.707A1 1 0 1 1 8.8 8.05l-.707-.707z"/></svg>
-        </span>
-        <span className="absolute right-2 text-blue-500 transition-opacity duration-300" style={{ opacity: dark ? 1 : 0 }}>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.75 15.5A6.75 6.75 0 0 1 8.5 6.25a.75.75 0 0 0-.75-.75A7.5 7.5 0 1 0 18 16.25a.75.75 0 0 0-.25-1.5z"/></svg>
-        </span>
       </button>
-      <motion.section
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 via-white to-blue-200 dark:from-gray-900 dark:to-gray-800 dark:bg-gradient-to-b text-gray-900 dark:text-white px-2 sm:px-4 py-8 sm:py-16 overflow-hidden shadow-xl rounded-b-3xl"
-      >
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-200/40 via-purple-200/30 to-blue-100/40 animate-gradient-x z-0 dark:from-blue-900/40 dark:via-purple-900/30 dark:to-blue-800/40" />
-        <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none" style={{ opacity: 0.10 }} width="100%" height="100%" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {[...Array(18)].map((_, i) => (
-            <circle key={i} cx={80 + i * 75} cy={100 + (i % 2) * 200} r="2.5" fill="#60a5fa" opacity="0.5" />
-          ))}
+
+      <main className="mx-auto flex max-w-6xl flex-col gap-24 px-6 pb-24 pt-12 sm:px-10">
+        <header className="flex flex-col gap-14 pt-4">
+          <nav className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm font-semibold tracking-[0.3em] text-slate-600 dark:text-slate-300">
+              <div className="h-2 w-2 rounded-full bg-blue-500" />
+              PRASHANT
+            </div>
+            <div className="hidden items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300 md:flex">
+              <a href="#projects" className="transition hover:text-blue-500 dark:hover:text-blue-400">
+                Projects
+              </a>
+              <a href="#skills" className="transition hover:text-blue-500 dark:hover:text-blue-400">
+                Skills
+              </a>
+              <a href="#education" className="transition hover:text-blue-500 dark:hover:text-blue-400">
+                Education
+              </a>
+              <a href="#contact" className="transition hover:text-blue-500 dark:hover:text-blue-400">
+                Contact
+              </a>
+            </div>
+            <div className="flex items-center gap-3">
+              <a
+                href="mailto:prashant047alg@gmail.com"
+                className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-600 shadow-sm transition hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200 dark:hover:border-blue-500 dark:hover:bg-blue-500/10 md:flex"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M4 6h16M4 6v12h16V6M4 6l8 7 8-7" />
         </svg>
-        <img
-          src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80"
-          alt="Background"
-          className="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm z-0 pointer-events-none select-none dark:opacity-30"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-blue-100/80 z-0 dark:from-gray-900/90 dark:via-transparent dark:to-gray-900/80" />
-        <motion.div className="absolute top-1/2 left-1/2 z-10" style={{ transform: 'translate(-50%, -50%)' }}>
-          <motion.div
-            className="relative w-40 h-40 sm:w-72 sm:h-72"
-            animate={{ rotate: [0, 360] }}
-            transition={{ repeat: Infinity, duration: 18, ease: 'linear' }}
-          >
-            {[
-              { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', style: 'top-0 left-1/2 -translate-x-1/2', delay: 0 },
-              { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', style: 'top-1/4 right-0 -translate-y-1/2', delay: 0.2 },
-              { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', style: 'bottom-1/4 right-0 translate-y-1/2', delay: 0.4 },
-              { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', style: 'bottom-0 left-1/2 translate-x-1/2', delay: 0.6 },
-              { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg', style: 'bottom-1/4 left-0 translate-y-1/2', delay: 0.8 },
-              { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', style: 'top-1/4 left-0 -translate-y-1/2', delay: 1.0 },
-            ].map((icon, idx) => (
-              <motion.img
-                key={icon.src}
-                src={icon.src}
-                alt="Tech Icon"
-                className={`absolute w-8 h-8 sm:w-12 sm:h-12 rounded-full shadow-xl ring-2 ring-blue-400/60 dark:ring-purple-400/60 bg-white/90 dark:bg-gray-900/80 p-1 ${icon.style}`}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1, filter: [
-                  'drop-shadow(0 0 0px #60a5fa)',
-                  'drop-shadow(0 0 8px #60a5fa)',
-                  'drop-shadow(0 0 0px #60a5fa)'
-                ] }}
-                transition={{ delay: 1.2 + icon.delay, duration: 1.2, repeat: Infinity, repeatType: 'reverse' }}
-              />
-            ))}
-          </motion.div>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.8, type: 'spring' }}
-          className="z-20 mb-2 sm:mb-4 relative"
-        >
-          <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-tr from-blue-300 via-purple-200 to-pink-200 blur-2xl opacity-60 animate-pulse-slow dark:from-blue-400 dark:via-purple-400 dark:to-pink-400" />
-          <img
-            src={profileImg}
-            alt="Prashant Kumar Avatar"
-            className="w-24 h-24 sm:w-36 sm:h-36 rounded-full border-4 border-white dark:border-gray-800 shadow-2xl object-cover bg-white/70 dark:bg-white/40 relative z-10 animate-avatar-glow"
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1, duration: 1, type: 'spring' }}
-          className="z-20 bg-white/80 dark:bg-gray-900/60 backdrop-blur-lg rounded-2xl sm:rounded-3xl px-4 sm:px-10 py-4 sm:py-8 shadow-2xl flex flex-col items-center border-2 border-transparent animate-border-glow w-full max-w-xs sm:max-w-2xl"
-        >
-          <motion.h1
-            className="text-3xl sm:text-5xl md:text-7xl font-extrabold mb-2 drop-shadow-lg tracking-tight bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 dark:from-blue-300 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent animate-gradient-x text-center"
-            initial={{ letterSpacing: '-0.1em' }}
-            animate={{ letterSpacing: '0.02em' }}
-            transition={{ duration: 1.2, delay: 1.2 }}
-          >
-            Prashant Kumar
-          </motion.h1>
-          <motion.h2
-            className="text-lg sm:text-2xl md:text-3xl font-medium mb-2 sm:mb-4 bg-blue-100/60 dark:bg-gray-800/40 px-3 sm:px-6 py-2 rounded-full shadow-lg backdrop-blur-md text-blue-900 dark:text-blue-200 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
-          >
-            <span className="typewriter">Full-Stack Developer | MERN</span>
-          </motion.h2>
-          <motion.p
-            className="text-base sm:text-lg md:text-xl font-medium text-blue-700 dark:text-blue-200 mt-2 mb-4 sm:mb-6 text-center max-w-xs sm:max-w-xl"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.7, duration: 0.7 }}
-          >
-            Building beautiful, scalable, and intelligent web experiences.
-          </motion.p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 justify-center w-full items-center">
-            <a href="https://github.com/Prashantkumar999" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full shadow-lg hover:from-purple-500 hover:to-blue-500 hover:scale-105 transition-all font-semibold dark:from-blue-400 dark:to-purple-600 w-full sm:w-auto justify-center">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.74-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .98-.31 3.2 1.18a11.1 11.1 0 0 1 2.92-.39c.99 0 1.99.13 2.92.39 2.22-1.49 3.2-1.18 3.2-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.7.42.36.79 1.09.79 2.2 0 1.59-.01 2.87-.01 3.26 0 .31.21.68.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z"/></svg>
-              GitHub
-            </a>
-            <a href="https://linkedin.com/in/prashant-kumar-39abb5253" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full shadow-lg hover:from-purple-500 hover:to-blue-500 hover:scale-105 transition-all font-semibold dark:from-blue-400 dark:to-purple-600 w-full sm:w-auto justify-center">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.75-1.75 1.75zm15.5 10.28h-3v-4.5c0-1.08-.02-2.47-1.5-2.47-1.5 0-1.73 1.17-1.73 2.39v4.58h-3v-9h2.88v1.23h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v4.72z"/></svg>
-              LinkedIn
-            </a>
-            <button className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full shadow-lg hover:from-purple-500 hover:to-blue-500 hover:scale-105 transition-all font-semibold cursor-pointer dark:from-blue-400 dark:to-purple-600 w-full sm:w-auto justify-center">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-1h8v1zm0-3H8v-1h8v1zm-3-7V3.5L18.5 9H13z"/></svg>
-              <a href="https://drive.google.com/file/d/1_mpgkYwZ2Xev0V_ini1l5zCX0Uz2vbf7/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="outline-none">Resume</a>
-            </button>
+                Say hello
+              </a>
+              <a
+                href="https://drive.google.com/file/d/1_mpgkYwZ2Xev0V_ini1l5zCX0Uz2vbf7/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow transition hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400"
+              >
+                Resume
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M9 12h6m-3-3v6M5 4h14v16H5z" />
+                </svg>
+              </a>
+            </div>
+          </nav>
+
+          <section className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_320px]" id="top">
+            <motion.div {...fadeUp}>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 dark:border-blue-500/40 dark:bg-blue-500/10 dark:text-blue-300">
+                <span className="h-2 w-2 rounded-full bg-blue-500" />
+                Full-stack developer · MERN stack
+              </div>
+              <h1 className="text-4xl font-bold leading-tight text-slate-900 dark:text-white sm:text-5xl">
+                Building user-friendly, responsive web applications with the MERN stack.
+              </h1>
+              <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">
+                Full-stack developer with hands-on experience in React.js, Node.js, Express.js, MongoDB, and Tailwind CSS. I focus on solving real product problems, crafting clean UI, and delivering maintainable codebases that are easy to iterate on.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <a
+                  href="#projects"
+                  className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                >
+                  Explore projects
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M7 17L17 7M7 7h10v10" />
+                  </svg>
+                </a>
+                <a
+                  href="https://linkedin.com/in/prashant-kumar-39abb5253"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-blue-400 hover:text-blue-600 dark:border-slate-700 dark:text-slate-200 dark:hover:border-blue-400 dark:hover:text-blue-300"
+                >
+                  Connect on LinkedIn
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M8 11v7m-3-7v7m3-10a1.5 1.5 0 1 1-3 0A1.5 1.5 0 0 1 8 8zm7 3v7m0-4a2 2 0 1 1 4 0v4m-4-7v4" />
+                  </svg>
+                </a>
           </div>
-          <motion.a href="#contact" className="underline hover:text-blue-700 dark:hover:text-blue-200 transition text-lg mt-2 text-center" whileHover={{ scale: 1.1 }}>Contact Me</motion.a>
         </motion.div>
-        <motion.div className="absolute -top-32 -left-32 w-60 h-60 sm:w-96 sm:h-96 bg-purple-200/30 rounded-full blur-3xl z-0 animate-spin-slow dark:bg-purple-400/30" />
-        <motion.div className="absolute -bottom-32 -right-32 w-60 h-60 sm:w-96 sm:h-96 bg-blue-100/30 rounded-full blur-3xl z-0 animate-spin-slow dark:bg-blue-300/30" />
-      </motion.section>
-      <motion.section
-        id="about"
-        initial={{ opacity: 0, x: -60 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="max-w-3xl mx-auto py-16 px-4"
-      >
-        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mb-4 text-center sm:text-left">
-          <img src={devSticker} alt="Developer Sticker" className="w-10 h-10 sm:w-10 sm:h-10 opacity-80 select-none mb-2 sm:mb-0" />
-          <h3 className="text-2xl sm:text-3xl font-bold text-blue-700 dark:text-blue-300">About Me</h3>
-        </div>
-        <p className="text-lg leading-relaxed bg-white/70 dark:bg-gray-900/70 dark:text-gray-100 rounded-xl p-6 shadow-lg">Full-stack developer with hands-on experience in the MERN stack, HTML, CSS, and Tailwind CSS. Passionate about solving complex problems, building user-friendly applications, and continuously learning new technologies. Strong understanding of both front-end and back-end development with a focus on writing clean, maintainable code.</p>
-      </motion.section>
-      <motion.section
-        id="skills"
-        initial={false}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
-        className="max-w-4xl mx-auto py-16 px-4"
-      >
-        <div className="flex items-center gap-3 mb-8">
-          <img src={rocketSticker} alt="Rocket Sticker" className="w-10 h-10 opacity-80 select-none" />
-          <h3 className="text-3xl font-bold text-blue-400">Skills</h3>
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ staggerChildren: 0.08, delayChildren: 0.2 }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6"
-        >
-          {[
-            { name: 'HTML', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', level: 'Advanced', desc: 'Semantic, accessible markup.' },
-            { name: 'CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', level: 'Advanced', desc: 'Responsive, modern layouts.' },
-            { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', level: 'Advanced', desc: 'ES6+, async, DOM, fetch.' },
-            { name: 'React.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', level: 'Advanced', desc: 'Hooks, SPA, state management.' },
-            { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', level: 'Advanced', desc: 'APIs, server-side JS.' },
-            { name: 'Express.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg', level: 'Advanced', desc: 'REST APIs, middleware.' },
-            { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', level: 'Advanced', desc: 'NoSQL, Mongoose ODM.' },
-            { name: 'Tailwind CSS', icon: 'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/HEAD/.github/logo-light.svg', iconDark: 'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/HEAD/.github/logo-dark.svg', level: 'Advanced', desc: 'Utility-first CSS framework.' },
-            { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', level: 'Advanced', desc: 'Version control, branching.' },
-            { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', iconDark: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original-white.svg', level: 'Advanced', desc: 'Collaboration, PRs, CI/CD.' },
-            { name: 'REST APIs', icon: 'https://www.svgrepo.com/show/354262/api.svg', level: 'Advanced', desc: 'RESTful design, fetch/axios.' },
-            { name: 'JWT Auth', icon: 'https://www.svgrepo.com/show/306500/jwt.svg', level: 'Intermediate', desc: 'Authentication, tokens.' },
-            { name: 'AI Integration', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', level: 'Familiar', desc: 'OpenAI API, ML basics.' },
-            { name: 'Vercel', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg', level: 'Advanced', desc: 'Frontend deployment.' },
-            { name: 'Render', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', level: 'Familiar', desc: 'Backend deployment.' },
-          ].map((skill, i) => (
+
             <motion.div
-              key={skill.name}
-              className="relative flex flex-col items-center bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-lg p-4 hover:bg-blue-50 dark:hover:bg-blue-900 transition group cursor-pointer border border-transparent hover:border-blue-400 dark:hover:border-blue-500"
-              whileHover={{ scale: 1.12, boxShadow: '0 0 24px 4px #60a5fa88, 0 0 32px 8px #a78bfa88' }}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08, duration: 0.6, type: 'spring' }}
+              {...fadeUp}
+              transition={{ ...fadeUp.transition, delay: 0.1 }}
+              className="relative mx-auto flex h-fit max-w-sm flex-col items-center justify-center rounded-3xl border border-slate-200/70 bg-white/70 p-8 text-center shadow-xl backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/60"
             >
-              <img
-                src={dark && skill.iconDark ? skill.iconDark : skill.icon}
-                alt={skill.name + ' logo'}
-                className="w-12 h-12 mb-2 drop-shadow-md bg-white dark:bg-gray-900 rounded-full p-1"
-                style={{ background: skill.name === 'GitHub' ? '#fff' : 'none' }}
-              />
-              <span className="font-semibold text-blue-700 dark:text-blue-200 text-lg mb-1 text-center">{skill.name}</span>
-              <span className="text-xs text-gray-500 dark:text-gray-300 text-center">{skill.level}</span>
-              <span className="skill-tooltip">{skill.desc}</span>
+              <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10" />
+              <div className="relative mb-6 h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-lg dark:border-slate-800">
+                <img src={profileImg} alt="Prashant Kumar portrait" className="h-full w-full object-cover" />
+              </div>
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Prashant Kumar</h2>
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-300">prashant047alg@gmail.com — +91 7818808311</p>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500 dark:text-slate-300">
+                <a href="https://github.com/Prashantkumar999" className="transition hover:text-blue-500 dark:hover:text-blue-400">
+                  github.com/Prashantkumar999
+                </a>
+                <span className="hidden h-4 w-px bg-slate-300 dark:bg-slate-700 sm:block" />
+                <a href="https://linkedin.com/in/prashant-kumar-39abb5253" className="transition hover:text-blue-500 dark:hover:text-blue-400">
+                  linkedin.com/in/prashant-kumar-39abb5253
+                </a>
+              </div>
             </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
-      <motion.section
-        id="projects"
-        initial={false}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
-        className="max-w-5xl mx-auto py-16 px-4"
-      >
-        <div className="flex items-center gap-3 mb-8">
-          <img src={projectSticker} alt="Project Sticker" className="w-10 h-10 opacity-80 select-none" />
-          <h3 className="text-3xl font-bold text-blue-400">Projects</h3>
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ staggerChildren: 0.12, delayChildren: 0.2 }}
-          className="grid gap-10 md:grid-cols-2"
-        >
-          <motion.div
-            whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
-            className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
-          >
-            <div className="w-full h-48 bg-gradient-to-tr from-purple-200 to-pink-200 dark:from-purple-900 dark:to-pink-900 rounded-2xl mb-4 flex items-center justify-center overflow-hidden">
-              <img src={clothzyStoreImg} alt="Clothzy Store" className="object-cover w-full h-full" />
-            </div>
-            <h4 className="text-xl font-bold mb-2 text-blue-800 dark:text-blue-200">Clothzy Store</h4>
-            <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">Full-stack developer | React.js, Redux, Node.js, Express.js, MongoDB, JWT, bcrypt</p>
-            <p className="mb-4 text-center dark:text-gray-100">A complete MERN stack e-commerce platform with user authentication, admin panel, shopping cart, and order management.</p>
-            <a href="https://clothzy-store.vercel.app" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-semibold">Live Site</a>
-            <motion.div className="absolute -top-10 -right-10 w-32 h-32 bg-purple-200/40 dark:bg-purple-900/40 rounded-full blur-2xl z-0 group-hover:scale-125 transition-transform" />
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
-            className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
-          >
-            <div className="w-full h-48 bg-gradient-to-tr from-blue-200 to-purple-200 dark:from-blue-900 dark:to-purple-900 rounded-2xl mb-4 flex items-center justify-center overflow-hidden">
-              <img src={smartStrokesImg} alt="Smart Strokes" className="object-cover w-full h-full" />
-            </div>
-            <h4 className="text-xl font-bold mb-2 text-blue-800 dark:text-blue-200">Smart Strokes</h4>
-            <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">Full-stack developer | React.js, Node.js, Express.js, MongoDB, Tailwind CSS, OpenAI API</p>
-            <p className="mb-4 text-center dark:text-gray-100">An AI-enhanced typing platform that detects user-specific mistakes and generates targeted typing practice content.</p>
-            <a href="https://smart-strokes.vercel.app" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-semibold">Live Site</a>
-            <motion.div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-200/40 dark:bg-blue-900/40 rounded-full blur-2xl z-0 group-hover:scale-125 transition-transform" />
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
-            className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
-          >
-            <div className="w-full h-48 bg-gradient-to-tr from-yellow-200 to-pink-200 dark:from-yellow-900 dark:to-pink-900 rounded-2xl mb-4 flex items-center justify-center overflow-hidden">
-              <img src={masalaflixImg} alt="MasalaFlix" className="object-cover w-full h-full" />
-            </div>
-            <h4 className="text-xl font-bold mb-2 text-blue-800 dark:text-blue-200">MasalaFlix</h4>
-            <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">Front-end developer | React.js, Tailwind CSS, TMDB API</p>
-            <p className="mb-4 text-center dark:text-gray-100">A modern movie streaming front-end app with search, filter, trailer popup, and responsive layout.</p>
-            <a href="https://masalaflix.vercel.app" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-semibold">Live Site</a>
-            <motion.div className="absolute -bottom-10 -left-10 w-32 h-32 bg-yellow-200/40 dark:bg-yellow-900/40 rounded-full blur-2xl z-0 group-hover:scale-125 transition-transform" />
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
-            className="bg-white/90 dark:bg-gray-900/80 rounded-3xl shadow-xl p-6 flex flex-col items-center transition-all group relative overflow-hidden"
-          >
-            <div className="w-full h-48 bg-gradient-to-tr from-green-200 to-blue-100 dark:from-green-900 dark:to-blue-900 rounded-2xl mb-4 flex items-center justify-center overflow-hidden">
-              <img src={techshotImg} alt="MERN Blog App" className="object-cover w-full h-full" />
-            </div>
-            <h4 className="text-xl font-bold mb-2 text-blue-800 dark:text-blue-200">MERN Blog App</h4>
-            <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">Full-stack developer | React.js, Node.js, Express.js, MongoDB, Tailwind CSS, JWT</p>
-            <p className="mb-4 text-center dark:text-gray-100">A secure blogging platform with user authentication, role-based access, and full blog CRUD operations.</p>
-            <a href="https://techshot-c9qe.onrender.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-semibold">Live Site</a>
-            <motion.div className="absolute -top-10 -left-10 w-32 h-32 bg-green-200/40 dark:bg-green-900/40 rounded-full blur-2xl z-0 group-hover:scale-125 transition-transform" />
-          </motion.div>
-        </motion.div>
-      </motion.section>
-      <motion.section
-        id="education"
-        initial={{ opacity: 0, x: -60 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.8 }}
-        className="max-w-3xl mx-auto py-16 px-4"
-      >
-        <div className="flex items-center gap-3 mb-8">
-          <img src={gradCapSticker} alt="Graduation Cap Sticker" className="w-10 h-10 opacity-80 select-none" />
-          <h3 className="text-3xl font-bold text-blue-400">Education</h3>
-        </div>
-        <div className="relative pl-6">
-          <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full opacity-60" />
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.7 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative bg-gray-900/80 rounded-xl shadow-lg p-6 mb-6 border-l-4 border-blue-500"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <svg className="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 2C7.03 2 2.5 6.03 2.5 11c0 4.97 4.53 9 9.5 9s9.5-4.03 9.5-9c0-4.97-4.53-9-9.5-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
-              <span className="font-bold text-lg text-blue-200">B.Tech in Computer Science</span>
-            </div>
-            <span className="text-sm text-gray-200">Aligarh College of Engineering and Technology</span>
-            <span className="text-xs text-gray-400">2019 - 2023 | CGPA: 7.8</span>
-            <p className="mt-2 text-gray-300 text-sm">Focused on software engineering, algorithms, and full-stack web development. Participated in coding competitions and tech fests.</p>
-          </motion.div>
-        </div>
-      </motion.section>
-      <motion.section
-        id="certificates"
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="max-w-4xl mx-auto py-16 px-4"
-      >
-        <div className="flex items-center gap-3 mb-8">
-          <img src={certSticker} alt="Certificate Sticker" className="w-10 h-10 opacity-80 select-none" />
-          <h3 className="text-3xl font-bold text-blue-400">Certificates</h3>
-        </div>
-        <div className="grid gap-8 md:grid-cols-2">
-          <motion.div
-            whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(96, 165, 250, 0.18)' }}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-gray-900/80 rounded-2xl shadow-lg p-6 flex flex-col gap-2 border-l-4 border-blue-500 hover:border-purple-500 transition-all group"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <svg className="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 17.75l-6.16 3.24 1.18-6.88-5-4.87 6.91-1L12 2.5l3.09 6.24 6.91 1-5 4.87 1.18 6.88z"/></svg>
-              <span className="font-bold text-lg text-blue-200">Web Development Course — Love Babbar</span>
-            </div>
-            <span className="text-sm text-gray-200">Successfully completed a comprehensive Web Development course.</span>
-            <span className="text-xs text-gray-400">Issued: 2024</span>
-            <img src="https://img.freepik.com/free-vector/certificate-concept-illustration_114360-4947.jpg?w=826&t=st=1680000000~exp=1680003600~hmac=placeholder" alt="Certificate" className="w-full h-32 object-contain rounded-lg bg-gray-800 my-2" />
-            <a href="https://drive.google.com/file/d/14mpyAomABZ1IbjCpGNSRiCHtxQuC0MTi/view" target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-400 underline hover:text-blue-300 font-semibold">View Certificate</a>
-          </motion.div>
-        </div>
-      </motion.section>
-      <motion.section
-        id="contact"
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="max-w-3xl mx-auto py-16 px-4"
-      >
-        <h3 className="text-3xl font-bold mb-8 text-blue-700 dark:text-blue-300 text-center">Contact</h3>
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex flex-col sm:flex-row gap-6 bg-gradient-to-tr from-blue-100 via-purple-100 to-blue-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-2xl shadow-xl p-8 w-full max-w-xl items-center border-2 border-blue-200 dark:border-blue-900 animate-border-glow">
-            <div className="flex flex-col items-center gap-4 w-full">
-              <div className="flex items-center gap-3">
-                <svg className="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16 12H8m8 0a4 4 0 11-8 0 4 4 0 018 0zm0 0v1a4 4 0 01-4 4H8a4 4 0 01-4-4v-1a4 4 0 014-4h4a4 4 0 014 4z" /></svg>
-                <a href="mailto:prashant047alg@gmail.com" className="text-lg sm:text-xl font-semibold text-blue-700 dark:text-blue-300 underline hover:text-blue-900 dark:hover:text-blue-400 transition">prashant047alg@gmail.com</a>
-              </div>
-              <div className="flex items-center gap-3">
-                <svg className="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h2.28a2 2 0 011.7 1.06l1.1 2.21a2 2 0 01-.45 2.45l-1.27 1.02a11.05 11.05 0 005.06 5.06l1.02-1.27a2 2 0 012.45-.45l2.21 1.1A2 2 0 0121 18.72V21a2 2 0 01-2 2h-1C9.163 23 1 14.837 1 5V4a2 2 0 012-2z" /></svg>
-                <a href="tel:+917818808311" className="text-lg sm:text-xl font-semibold text-blue-700 dark:text-blue-300 underline hover:text-blue-900 dark:hover:text-blue-400 transition">+91 7818808311</a>
-              </div>
-            </div>
+          </section>
+        </header>
+
+        <motion.section {...fadeUp} id="skills" className="flex flex-col gap-10">
+          <div>
+            <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Skills</span>
+            <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Technologies I work with every day.</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-300">
+              A hands-on toolkit covering front-end interfaces, backend APIs, authentication, and deployments. Each project is built with these technologies based on use-case fit and performance needs.
+            </p>
           </div>
+          <div className="grid gap-6 lg:grid-cols-3">
+            {skillGroups.map((group) => (
+              <div
+                key={group.title}
+                className="flex h-full flex-col gap-4 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/60"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{group.title}
+                  </h3>
+                  <svg className="h-5 w-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M6 20h12M9 20V4h6v16M9 8h6" />
+                  </svg>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {group.skills.map((skill) => (
+                    <SkillBadge key={skill} label={skill} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+      </motion.section>
+
+        <motion.section {...fadeUp} id="education" className="flex flex-col gap-10">
+          <div>
+            <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Education</span>
+            <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Academic background.</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-300">
+              Formal education combined with continuous learning keeps me grounded in fundamentals while adapting to new tools.
+            </p>
+        </div>
+          <div className="space-y-6">
+            {education.map((item) => (
+              <div
+                key={`${item.institution}-${item.program}`}
+                className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/60"
+              >
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{item.program}</h3>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-blue-500">{item.period}</span>
+            </div>
+                <p className="text-sm leading-6 text-slate-500 dark:text-slate-300">{item.institution}</p>
+                {item.detail ? <p className="mt-1 text-sm text-slate-500 dark:text-slate-300">{item.detail}</p> : null}
+            </div>
+            ))}
+            </div>
+      </motion.section>
+
+        <motion.section {...fadeUp} id="projects" className="flex flex-col gap-10">
+          <div>
+            <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Projects</span>
+            <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Work that reflects my problem-solving approach.</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-300">
+              I enjoy taking ideas from concept to deployment. Each project below highlights the stack, the goals, and what I built to meet them.
+            </p>
+          </div>
+          <div className="grid gap-8 lg:grid-cols-2">
+            {projects.map((project) => (
+              <div
+                key={project.title}
+                className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white/80 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl dark:border-slate-700 dark:bg-slate-900/70"
+              >
+                <div className="relative h-56 overflow-hidden bg-slate-900/10">
+                  <img src={project.image} alt={project.title} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+                </div>
+                <div className="flex flex-1 flex-col gap-5 p-6">
+                  <div>
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white">{project.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-300">{project.description}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {project.stack.map((item) => (
+                      <SkillBadge key={item} label={item} />
+                    ))}
+                  </div>
+                  <ul className="space-y-2 text-sm leading-6 text-slate-500 dark:text-slate-300">
+                    {project.features.map((feature) => (
+                      <li key={feature} className="flex gap-2">
+                        <svg className="mt-1 h-3.5 w-3.5 flex-shrink-0 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M9.707 17.707 4 12l1.414-1.414L9.707 14.88l8.879-8.879L20 7.293z" />
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  {project.credentials ? (
+                    <div className="rounded-xl border border-dashed border-blue-300/60 bg-blue-50/60 p-4 text-xs text-blue-700 dark:border-blue-500/60 dark:bg-blue-500/10 dark:text-blue-200">
+                      <p className="font-semibold uppercase tracking-widest">Admin demo access</p>
+                      <p className="mt-2">Email <a href="mailto:prashant047alg@gmail.com" className="font-semibold underline">prashant047alg@gmail.com</a> to request temporary admin access credentials for evaluation.</p>
+        </div>
+                  ) : null}
+                  <div className="mt-auto flex flex-wrap gap-3">
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                    >
+                      Live preview
+                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M7 17 17 7M7 7h10v10" />
+                      </svg>
+                    </a>
+                    {project.repoUrl ? (
+                      <a
+                        href={project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-600 transition hover:border-blue-400 hover:text-blue-600 dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-400 dark:hover:text-blue-300"
+                      >
+                        GitHub
+                        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2a10 10 0 0 0-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.18-1.12-1.5-1.12-1.5-.91-.62.07-.6.07-.6 1 .07 1.52 1.04 1.52 1.04.9 1.52 2.36 1.08 2.94.82.09-.66.35-1.08.64-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.42 9.42 0 0 1 5 0c1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z" />
+                        </svg>
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+            </div>
+            ))}
         </div>
       </motion.section>
+
+        <motion.section {...fadeUp} id="certifications" className="flex flex-col gap-8">
+          <div>
+            <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Certifications</span>
+            <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Continuous learning & credentials.</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-300">
+              Hands-on training and coursework that sharpened my full-stack fundamentals and project delivery skills.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900/70">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Full Stack Web Development</h3>
+                <svg className="h-5 w-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M4 6h16M4 6v12h16V6M4 6l8 7 8-7" />
+                </svg>
+        </div>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-300">Love Babbar — Web Development Course</p>
+              <p className="text-xs uppercase tracking-widest text-blue-500">Issued 2024</p>
+              <p className="text-sm leading-6 text-slate-500 dark:text-slate-300">
+                Completed an industry-focused full stack curriculum covering MERN architecture, authentication, deployment workflows, and real-world project delivery.
+              </p>
+              <a
+                href="https://drive.google.com/file/d/14mpyAomABZ1IbjCpGNSRiCHtxQuC0MTi/view"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow transition hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400"
+              >
+                View certificate
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M7 17 17 7M7 7h10v10" />
+                </svg>
+              </a>
+            </div>
+        </div>
+      </motion.section>
+
+        <motion.section {...fadeUp} id="contact" className="rounded-3xl border border-slate-200 bg-white/80 p-10 shadow-xl backdrop-blur dark:border-slate-700 dark:bg-slate-900/70">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Availability</span>
+              <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">
+                Ready to collaborate on your next release cycle.
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-300">
+                I work with startups, product teams, and founders to build or scale web products. Share your roadmap—let’s align on scope, outcomes, and ship dates.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 text-sm text-slate-600 dark:text-slate-300">
+              <a
+                href="mailto:prashant047alg@gmail.com"
+                className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/70 px-5 py-3 font-medium shadow-sm transition hover:border-blue-400 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900/60 dark:hover:border-blue-400 dark:hover:text-blue-300"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M4 6h16M4 6v12h16V6M4 6l8 7 8-7" />
+                </svg>
+                prashant047alg@gmail.com
+              </a>
+              <a
+                href="tel:+917818808311"
+                className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/70 px-5 py-3 font-medium shadow-sm transition hover:border-blue-400 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900/60 dark:hover:border-blue-400 dark:hover:text-blue-300"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M4 5a2 2 0 0 1 2-2h1.28a1.5 1.5 0 0 1 1.37.93l1 2.4a1.5 1.5 0 0 1-.34 1.65l-1.01 1.01a13 13 0 0 0 5.18 5.18l1.01-1.01a1.5 1.5 0 0 1 1.65-.34l2.4 1a1.5 1.5 0 0 1 .93 1.37V19a2 2 0 0 1-2 2h-.75C9.55 21 3 14.45 3 6.75V6" />
+                </svg>
+                +91 78188 08311
+              </a>
+            </div>
+        </div>
+      </motion.section>
+
+        <footer className="flex flex-col items-center gap-2 text-center text-xs text-slate-400 dark:text-slate-500">
+          <p>© {new Date().getFullYear()} Prashant Kumar. Crafted with purpose, performance, and polish.</p>
+          <p>Available for remote-first collaborations across time zones.</p>
+        </footer>
+      </main>
     </div>
   );
 }
