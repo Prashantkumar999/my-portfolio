@@ -136,7 +136,7 @@ function App() {
   );
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 transition-colors duration-500 ease-out dark:bg-slate-950 dark:text-slate-100">
+    <div className="relative min-h-screen overflow-x-hidden bg-slate-50 text-slate-900 transition-colors duration-500 ease-out dark:bg-slate-950 dark:text-slate-100">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -left-24 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-500/20" />
         <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-purple-300/30 blur-3xl dark:bg-purple-600/20" />
