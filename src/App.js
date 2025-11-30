@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { motion } from 'framer-motion';
 import clothzyStoreImg from './images/clothzy-1.png';
@@ -7,475 +7,556 @@ import masalaflixImg from './images/masalaflix-home.png';
 import techshotImg from './images/techshot-home.png';
 import profileImg from './images/profile-1.jpg';
 
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.4 },
-  transition: { duration: 0.6, ease: 'easeOut' },
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
-const SkillBadge = ({ label }) => (
-  <span className="inline-flex items-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-200">
-    {label}
-  </span>
-);
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
 
 function App() {
-  const [dark, setDark] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return (
-        localStorage.getItem('theme') === 'dark' ||
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      );
-    }
-    return false;
-  });
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
-    if (dark) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [dark]);
+    document.documentElement.classList.add('dark');
+  }, []);
 
-  const skillGroups = useMemo(
-    () => [
-      {
-        title: 'Languages & Frameworks',
-        skills: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS'],
-      },
-      {
-        title: 'Tools & Platforms',
-        skills: ['Git', 'GitHub', 'VS Code', 'REST APIs', 'JWT Authentication', 'AI Integration'],
-      },
-      {
-        title: 'Deployment',
-        skills: ['Vercel', 'Render'],
-      },
-    ],
-    []
-  );
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+    
+    handleResize(); // Set initial size
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
-  const education = useMemo(
-    () => [
-      {
-        institution: 'Aligarh College of Engineering and Technology, Aligarh',
-        program: 'B.Tech in Computer Science',
-        period: '2019 — 2023',
-        detail: 'CGPA: 7.8',
-      },
-      {
-        institution: 'Agrasen Inter College, Aligarh',
-        program: '12th Grade — 70%',
-        period: '2018',
-      },
-      {
-        institution: 'Agrasen Inter College, Aligarh',
-        program: '10th Grade — 76%',
-        period: '2016',
-      },
-    ],
-    []
-  );
+  const skills = [
+    'React.js', 'Node.js', 'Express.js', 'MongoDB', 'JavaScript', 
+    'HTML', 'CSS', 'Tailwind CSS', 'Git', 'GitHub', 'REST APIs', 
+    'JWT Authentication', 'Vercel', 'Render'
+  ];
 
-  const projects = useMemo(
-    () => [
-      {
-        title: 'Clothzy Store',
-        description:
-          'A MERN stack e-commerce clothing platform that supports user browsing, cart management, order placement, and an admin panel for inventory and orders.',
-        image: clothzyStoreImg,
-        liveUrl: 'https://clothzy-store.vercel.app/',
-        repoUrl: 'https://github.com/Prashantkumar999/clothzyStore',
-        stack: ['React.js', 'Redux Toolkit', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
-        features: [
-          'Customer authentication and protected routes',
-          'Cart and order workflows with responsive UI',
-          'Admin dashboard for product and order management',
-        ],
-        credentials: {
-          email: 'clothzystore@gmail.com',
-          password: '123456',
-        },
+  const education = [
+    {
+      institution: 'Aligarh College of Engineering and Technology, Aligarh',
+      program: 'B.Tech in Computer Science',
+      period: '2019 — 2023',
+      detail: 'CGPA: 7.8',
+    },
+    {
+      institution: 'Agrasen Inter College, Aligarh',
+      program: '12th Grade — 70%',
+      period: '2018',
+    },
+    {
+      institution: 'Agrasen Inter College, Aligarh',
+      program: '10th Grade — 76%',
+      period: '2016',
+    },
+  ];
+
+  const projects = [
+    {
+      title: 'Clothzy Store',
+      description: 'A MERN stack e-commerce clothing platform that supports user browsing, cart management, order placement, and an admin panel for inventory and orders.',
+      image: clothzyStoreImg,
+      liveUrl: 'https://clothzy-store.vercel.app/',
+      repoUrl: 'https://github.com/Prashantkumar999/clothzyStore',
+      stack: ['React.js', 'Redux Toolkit', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
+      features: [
+        'Customer authentication and protected routes',
+        'Cart and order workflows with responsive UI',
+        'Admin dashboard for product and order management',
+      ],
+      credentials: {
+        email: 'clothzystore@gmail.com',
+        password: '123456',
       },
-      {
-        title: 'Smart Strokes',
-        description:
-          'An AI-enhanced typing platform that analyses character-level mistakes and generates targeted practice content to improve accuracy.',
-        image: smartStrokesImg,
-        liveUrl: 'https://smart-strokes.vercel.app',
-        repoUrl: 'https://github.com/Prashantkumar999/Smart-Strokes',
-        stack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'OpenAI API'],
-        features: ['Mistake detection and analytics', 'Dynamic content generation using AI', 'Responsive design for all devices'],
-      },
-      {
-        title: 'MasalaFlix',
-        description:
-          'A responsive movie streaming front-end that lets users browse, search, and explore films with trailers and ratings using the TMDB API.',
-        image: masalaflixImg,
-        liveUrl: 'https://masalaflix.vercel.app',
-        repoUrl: 'https://github.com/Prashantkumar999/MasalaFlix',
-        stack: ['React.js', 'Tailwind CSS', 'TMDB API'],
-        features: ['Search and filter functionality', 'Trailer popups and responsive grid layout', 'Integration with TMDB for live data'],
-      },
-      {
-        title: 'MERN Blog App',
-        description:
-          'A secure blogging platform with user authentication, role-based access, and CRUD support for managing blog content.',
-        image: techshotImg,
-        liveUrl: 'https://techshot-c9qe.onrender.com',
-        repoUrl: 'https://github.com/Prashantkumar999/techshot-blog',
-        stack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
-        features: ['JWT authentication and role support', 'Rich text editor for blogs', 'REST API architecture'],
-      },
-    ],
-    []
-  );
+    },
+    {
+      title: 'Smart Strokes',
+      description: 'An AI-enhanced typing platform that analyses character-level mistakes and generates targeted practice content to improve accuracy.',
+      image: smartStrokesImg,
+      liveUrl: 'https://smart-strokes.vercel.app',
+      repoUrl: 'https://github.com/Prashantkumar999/Smart-Strokes',
+      stack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'OpenAI API'],
+      features: ['Mistake detection and analytics', 'Dynamic content generation using AI', 'Responsive design for all devices'],
+    },
+    {
+      title: 'MasalaFlix',
+      description: 'A responsive movie streaming front-end that lets users browse, search, and explore films with trailers and ratings using the TMDB API.',
+      image: masalaflixImg,
+      liveUrl: 'https://masalaflix.vercel.app',
+      repoUrl: 'https://github.com/Prashantkumar999/MasalaFlix',
+      stack: ['React.js', 'Tailwind CSS', 'TMDB API'],
+      features: ['Search and filter functionality', 'Trailer popups and responsive grid layout', 'Integration with TMDB for live data'],
+    },
+    {
+      title: 'MERN Blog App',
+      description: 'A secure blogging platform with user authentication, role-based access, and CRUD support for managing blog content.',
+      image: techshotImg,
+      liveUrl: 'https://techshot-c9qe.onrender.com',
+      repoUrl: 'https://github.com/Prashantkumar999/techshot-blog',
+      stack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
+      features: ['JWT authentication and role support', 'Rich text editor for blogs', 'REST API architecture'],
+    },
+  ];
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-slate-50 text-slate-900 transition-colors duration-500 ease-out dark:bg-slate-950 dark:text-slate-100">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -left-24 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-500/20" />
-        <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-purple-300/30 blur-3xl dark:bg-purple-600/20" />
-        <div className="absolute inset-x-0 top-1/3 h-px bg-gradient-to-r from-transparent via-slate-200/60 to-transparent dark:via-slate-700/40" />
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100 transition-colors duration-500">
+      {/* Animated background gradient */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div 
+          className="absolute rounded-full opacity-20 blur-3xl transition-all duration-1000"
+          style={{
+            width: '600px',
+            height: '600px',
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)',
+            left: `${mousePosition.x - 300}px`,
+            top: `${mousePosition.y - 300}px`,
+            transform: 'translate(-50%, -50%)',
+          }}
+        />
+        <div 
+          className="absolute rounded-full opacity-15 blur-3xl transition-all duration-1000 delay-200"
+          style={{
+            width: '500px',
+            height: '500px',
+            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%)',
+            right: windowSize.width > 0 ? `${windowSize.width - mousePosition.x - 250}px` : '50%',
+            bottom: windowSize.height > 0 ? `${windowSize.height - mousePosition.y - 250}px` : '50%',
+            transform: 'translate(50%, 50%)',
+          }}
+        />
       </div>
 
-      <button
-        aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-        className="fixed top-6 right-6 z-50 flex h-10 w-24 items-center justify-between rounded-full border border-slate-200 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500 shadow-lg backdrop-blur transition dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300"
-        onClick={() => setDark((d) => !d)}
+      {/* Navigation */}
+      <motion.nav 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="fixed top-0 left-0 right-0 z-40 border-b border-slate-800/50 bg-slate-900/60 backdrop-blur-xl"
       >
-        <span className="text-center">{dark ? 'Dark' : 'Light'}</span>
-        <span
-          className={`inline-flex h-8 w-8 min-w-[2rem] items-center justify-center rounded-full border border-white/40 bg-gradient-to-br text-white shadow-md transition ${
-            dark ? 'from-blue-500 to-indigo-500' : 'from-amber-500 to-orange-500'
-          }`}
-        >
-          {dark ? (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 1 0 21 12.79z" />
-            </svg>
-          ) : (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 4a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V5a1 1 0 0 1 1-1zm0 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8-4h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2zM5 12a1 1 0 0 1-1 1H3a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1zm13.657 6.657-1.06-1.06a1 1 0 0 1 1.414-1.415l1.06 1.061a1 1 0 0 1-1.414 1.414zM6.404 6.404 5.343 5.343A1 1 0 1 1 6.757 3.93l1.06 1.06a1 1 0 0 1-1.413 1.415zM18.657 5.343l-1.06 1.06A1 1 0 1 1 16.182 4.99l1.06-1.061A1 1 0 0 1 18.657 5.343zM7.464 19.657l-1.06 1.06A1 1 0 1 1 5 19.303l1.06-1.06a1 1 0 0 1 1.414 1.414zM12 19a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1z" />
-            </svg>
-          )}
-        </span>
-      </button>
-
-      <main className="mx-auto flex max-w-6xl flex-col gap-24 px-6 pb-24 pt-12 sm:px-10">
-        <header className="flex flex-col gap-14 pt-4">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm font-semibold tracking-[0.3em] text-slate-600 dark:text-slate-300">
-              <div className="h-2 w-2 rounded-full bg-blue-500" />
-              PRASHANT
-            </div>
-            <div className="hidden items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300 md:flex">
-              <a href="#projects" className="transition hover:text-blue-500 dark:hover:text-blue-400">
-                Projects
-              </a>
-              <a href="#skills" className="transition hover:text-blue-500 dark:hover:text-blue-400">
-                Skills
-              </a>
-              <a href="#education" className="transition hover:text-blue-500 dark:hover:text-blue-400">
-                Education
-              </a>
-              <a href="#contact" className="transition hover:text-blue-500 dark:hover:text-blue-400">
-                Contact
-              </a>
-            </div>
-            <div className="flex items-center gap-3">
-              <a
-                href="mailto:prashant047alg@gmail.com"
-                className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-600 shadow-sm transition hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200 dark:hover:border-blue-500 dark:hover:bg-blue-500/10 md:flex"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M4 6h16M4 6v12h16V6M4 6l8 7 8-7" />
-        </svg>
-                Say hello
-              </a>
-              <a
-                href="https://drive.google.com/file/d/1_mpgkYwZ2Xev0V_ini1l5zCX0Uz2vbf7/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow transition hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400"
-              >
-                Resume
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M9 12h6m-3-3v6M5 4h14v16H5z" />
-                </svg>
-              </a>
-            </div>
-          </nav>
-
-          <section className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_320px]" id="top">
-            <motion.div {...fadeUp}>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 dark:border-blue-500/40 dark:bg-blue-500/10 dark:text-blue-300">
-                <span className="h-2 w-2 rounded-full bg-blue-500" />
-                Full-stack developer · MERN stack
-              </div>
-              <h1 className="text-4xl font-bold leading-tight text-slate-900 dark:text-white sm:text-5xl">
-                Building user-friendly, responsive web applications with the MERN stack.
-              </h1>
-              <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">
-                Full-stack developer with hands-on experience in React.js, Node.js, Express.js, MongoDB, and Tailwind CSS. I focus on solving real product problems, crafting clean UI, and delivering maintainable codebases that are easy to iterate on.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8">
+          <div className="flex h-20 items-center justify-between">
+            <motion.a 
+              href="#home"
+              whileHover={{ scale: 1.05 }}
+              className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            >
+              PK
+            </motion.a>
+            <div className="hidden md:flex items-center gap-8">
+              {['Projects', 'Skills', 'Education', 'Contact'].map((item) => (
                 <a
-                  href="#projects"
-                  className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  className="text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors relative group"
                 >
-                  Explore projects
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M7 17L17 7M7 7h10v10" />
-                  </svg>
+                  {item}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300" />
                 </a>
-                <a
-                  href="https://linkedin.com/in/prashant-kumar-39abb5253"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-blue-400 hover:text-blue-600 dark:border-slate-700 dark:text-slate-200 dark:hover:border-blue-400 dark:hover:text-blue-300"
-                >
-                  Connect on LinkedIn
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M8 11v7m-3-7v7m3-10a1.5 1.5 0 1 1-3 0A1.5 1.5 0 0 1 8 8zm7 3v7m0-4a2 2 0 1 1 4 0v4m-4-7v4" />
-                  </svg>
-                </a>
+              ))}
+            </div>
+            <motion.a
+              href="https://forms.gle/A6DS7YaJ4kMhpCV49"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="hidden md:flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-semibold shadow-lg hover:shadow-xl transition-all"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Get in Touch
+            </motion.a>
           </div>
-        </motion.div>
+        </div>
+      </motion.nav>
+
+      <main className="pt-20">
+        {/* Hero Section */}
+        <section id="home" className="relative min-h-screen flex items-center justify-center px-6 sm:px-8 py-20">
+          <div className="mx-auto max-w-7xl w-full">
+            <motion.div
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+              className="grid lg:grid-cols-2 gap-12 items-center"
+            >
+              <motion.div variants={fadeInUp} className="space-y-8">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-900/30 border border-blue-800/50 backdrop-blur-sm"
+                >
+                  <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+                  <span className="text-sm font-semibold text-blue-300">Full-Stack Developer</span>
+                </motion.div>
+                
+                <motion.h1
+                  variants={fadeInUp}
+                  className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight"
+                >
+                  <span className="bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
+                    Building Digital
+                  </span>
+                  <br />
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Experiences
+                  </span>
+                </motion.h1>
+                
+                <motion.p
+                  variants={fadeInUp}
+                  className="text-lg sm:text-xl text-slate-300 leading-relaxed max-w-2xl"
+                >
+                  I craft beautiful, functional web applications using the MERN stack. 
+                  Passionate about clean code, user experience, and bringing ideas to life.
+                </motion.p>
+                
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex flex-wrap gap-4"
+                >
+                  <motion.a
+                    href="#projects"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+                  >
+                    View My Work
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </motion.a>
+                  <motion.a
+                    href="https://drive.google.com/file/d/1_mpgkYwZ2Xev0V_ini1l5zCX0Uz2vbf7/view?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 rounded-xl bg-slate-800/80 backdrop-blur-xl border border-slate-700/50 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                  >
+                    Download Resume
+                  </motion.a>
+                </motion.div>
+              </motion.div>
+
+              <motion.div
+                variants={fadeInUp}
+                className="relative"
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
+                  className="relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-2xl opacity-30 animate-pulse" />
+                  <div className="relative rounded-3xl overflow-hidden border-4 border-slate-800/20 shadow-2xl bg-slate-900/10 backdrop-blur-xl p-8">
+                    <img 
+                      src={profileImg} 
+                      alt="Profile" 
+                      className="w-64 h-64 mx-auto rounded-full object-cover"
+                    />
+                    <div className="mt-6 text-center">
+                      <h3 className="text-2xl font-bold text-white">Prashant Kumar</h3>
+                      <p className="text-slate-300 mt-2">Full-Stack Developer</p>
+                      <div className="flex justify-center gap-4 mt-4">
+                        <a href="https://github.com/Prashantkumar999" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-slate-800 hover:bg-blue-900/30 transition-colors">
+                          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                          </svg>
+                        </a>
+                        <a href="https://linkedin.com/in/prashant-kumar-39abb5253" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-slate-800 hover:bg-blue-900/30 transition-colors">
+                          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Skills Section */}
+        <section id="skills" className="py-12 px-6 sm:px-8">
+          <div className="mx-auto max-w-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Skills</span>
+              <h2 className="text-4xl sm:text-5xl font-bold mt-4 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                Technologies & Tools
+              </h2>
+              <p className="text-slate-300 mt-4 max-w-2xl mx-auto">
+                A comprehensive toolkit for building modern web applications
+              </p>
+            </motion.div>
 
             <motion.div
-              {...fadeUp}
-              transition={{ ...fadeUp.transition, delay: 0.1 }}
-              className="relative mx-auto flex h-fit max-w-sm flex-col items-center justify-center rounded-3xl border border-slate-200/70 bg-white/70 p-8 text-center shadow-xl backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/60"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
             >
-              <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10" />
-              <div className="relative mb-6 h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-lg dark:border-slate-800">
-                <img src={profileImg} alt="Prashant Kumar portrait" className="h-full w-full object-cover" />
-              </div>
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Prashant Kumar</h2>
-              <p className="mt-2 text-sm text-slate-500 dark:text-slate-300">prashant047alg@gmail.com — +91 7818808311</p>
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500 dark:text-slate-300">
-                <a href="https://github.com/Prashantkumar999" className="transition hover:text-blue-500 dark:hover:text-blue-400">
-                  github.com/Prashantkumar999
-                </a>
-                <span className="hidden h-4 w-px bg-slate-300 dark:bg-slate-700 sm:block" />
-                <a href="https://linkedin.com/in/prashant-kumar-39abb5253" className="transition hover:text-blue-500 dark:hover:text-blue-400">
-                  linkedin.com/in/prashant-kumar-39abb5253
-                </a>
-              </div>
+              {skills.map((skill, index) => (
+                <motion.div
+                  key={skill}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="p-6 rounded-2xl bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 shadow-lg hover:shadow-xl transition-all text-center"
+                >
+                  <span className="text-sm font-semibold text-white">{skill}</span>
+                </motion.div>
+              ))}
             </motion.div>
-          </section>
-        </header>
-
-        <motion.section {...fadeUp} id="skills" className="flex flex-col gap-10">
-          <div>
-            <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Skills</span>
-            <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Technologies I work with every day.</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-300">
-              A hands-on toolkit covering front-end interfaces, backend APIs, authentication, and deployments. Each project is built with these technologies based on use-case fit and performance needs.
-            </p>
           </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {skillGroups.map((group) => (
-              <div
-                key={group.title}
-                className="flex h-full flex-col gap-4 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/60"
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{group.title}
-                  </h3>
-                  <svg className="h-5 w-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M6 20h12M9 20V4h6v16M9 8h6" />
-                  </svg>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {group.skills.map((skill) => (
-                    <SkillBadge key={skill} label={skill} />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-      </motion.section>
+        </section>
 
-        <motion.section {...fadeUp} id="education" className="flex flex-col gap-10">
-          <div>
-            <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Education</span>
-            <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Academic background.</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-300">
-              Formal education combined with continuous learning keeps me grounded in fundamentals while adapting to new tools.
-            </p>
-        </div>
-          <div className="space-y-6">
-            {education.map((item) => (
-              <div
-                key={`${item.institution}-${item.program}`}
-                className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/60"
-              >
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{item.program}</h3>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-blue-500">{item.period}</span>
-            </div>
-                <p className="text-sm leading-6 text-slate-500 dark:text-slate-300">{item.institution}</p>
-                {item.detail ? <p className="mt-1 text-sm text-slate-500 dark:text-slate-300">{item.detail}</p> : null}
-            </div>
-            ))}
-            </div>
-      </motion.section>
+        {/* Projects Section */}
+        <section id="projects" className="py-12 px-4 sm:px-6 md:px-8 bg-slate-900/30 backdrop-blur-sm">
+          <div className="mx-auto max-w-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="text-center mb-8"
+            >
+              <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Projects</span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                Featured Work
+              </h2>
+              <p className="text-slate-300 mt-4 max-w-2xl mx-auto text-sm sm:text-base px-4">
+                A collection of projects showcasing my skills and problem-solving approach
+              </p>
+            </motion.div>
 
-        <motion.section {...fadeUp} id="projects" className="flex flex-col gap-10">
-          <div>
-            <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Projects</span>
-            <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Work that reflects my problem-solving approach.</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-300">
-              I enjoy taking ideas from concept to deployment. Each project below highlights the stack, the goals, and what I built to meet them.
-            </p>
-          </div>
-          <div className="grid gap-8 lg:grid-cols-2">
-            {projects.map((project) => (
-              <div
-                key={project.title}
-                className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white/80 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl dark:border-slate-700 dark:bg-slate-900/70"
-              >
-                <div className="relative h-56 overflow-hidden bg-slate-900/10">
-                  <img src={project.image} alt={project.title} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
-                </div>
-                <div className="flex flex-1 flex-col gap-5 p-6">
-                  <div>
-                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white">{project.title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-300">{project.description}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              {projects.map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-800/80 backdrop-blur-xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all w-full"
+                >
+                  <div className="relative h-48 sm:h-64 overflow-hidden bg-slate-900">
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {project.stack.map((item) => (
-                      <SkillBadge key={item} label={item} />
-                    ))}
-                  </div>
-                  <ul className="space-y-2 text-sm leading-6 text-slate-500 dark:text-slate-300">
-                    {project.features.map((feature) => (
-                      <li key={feature} className="flex gap-2">
-                        <svg className="mt-1 h-3.5 w-3.5 flex-shrink-0 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M9.707 17.707 4 12l1.414-1.414L9.707 14.88l8.879-8.879L20 7.293z" />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  {project.credentials ? (
-                    <div className="rounded-xl border border-dashed border-blue-300/60 bg-blue-50/60 p-4 text-xs text-blue-700 dark:border-blue-500/60 dark:bg-blue-500/10 dark:text-blue-200">
-                      <p className="font-semibold uppercase tracking-widest">Admin demo access</p>
-                      <p className="mt-2">Email <a href="mailto:prashant047alg@gmail.com" className="font-semibold underline">prashant047alg@gmail.com</a> to request temporary admin access credentials for evaluation.</p>
-        </div>
-                  ) : null}
-                  <div className="mt-auto flex flex-wrap gap-3">
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
-                    >
-                      Live preview
-                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M7 17 17 7M7 7h10v10" />
-                      </svg>
-                    </a>
-                    {project.repoUrl ? (
-                      <a
+                  <div className="p-4 sm:p-6 md:p-8">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">{project.title}</h3>
+                    <p className="text-sm sm:text-base text-slate-300 mb-4 sm:mb-6 leading-relaxed">{project.description}</p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
+                      {project.stack.slice(0, 4).map((tech) => (
+                        <span 
+                          key={tech}
+                          className="px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-blue-900/30 text-blue-300"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.stack.length > 4 && (
+                        <span className="px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-slate-700 text-slate-300">
+                          +{project.stack.length - 4} more
+                        </span>
+                      )}
+                    </div>
+
+                    <ul className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
+                      {project.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-xs sm:text-sm text-slate-300">
+                          <svg className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                      <motion.a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-sm sm:text-base text-center shadow-lg hover:shadow-xl transition-all"
+                      >
+                        Live Demo
+                      </motion.a>
+                      <motion.a
                         href={project.repoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-600 transition hover:border-blue-400 hover:text-blue-600 dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-400 dark:hover:text-blue-300"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-slate-700 border border-slate-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center"
                       >
-                        GitHub
-                        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2a10 10 0 0 0-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.18-1.12-1.5-1.12-1.5-.91-.62.07-.6.07-.6 1 .07 1.52 1.04 1.52 1.04.9 1.52 2.36 1.08 2.94.82.09-.66.35-1.08.64-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.42 9.42 0 0 1 5 0c1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z" />
+                        <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
                         </svg>
-                      </a>
-                    ) : null}
+                      </motion.a>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Education Section */}
+        <section id="education" className="py-12 px-6 sm:px-8">
+          <div className="mx-auto max-w-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Education</span>
+              <h2 className="text-4xl sm:text-5xl font-bold mt-4 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                Academic Journey
+              </h2>
+            </motion.div>
+
+            <div className="max-w-3xl mx-auto space-y-6">
+              {education.map((item, index) => (
+                <motion.div
+                  key={`${item.institution}-${item.program}`}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="p-8 rounded-2xl bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 shadow-lg hover:shadow-xl transition-all"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-3">
+                    <h3 className="text-xl font-bold text-white">{item.program}</h3>
+                    <span className="text-sm font-semibold text-blue-400">{item.period}</span>
+                  </div>
+                  <p className="text-slate-300">{item.institution}</p>
+                  {item.detail && (
+                    <p className="mt-2 text-sm text-slate-400">{item.detail}</p>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="py-12 px-6 sm:px-8 bg-gradient-to-br from-blue-600 to-purple-600">
+          <div className="mx-auto max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <span className="text-sm font-semibold text-blue-100 uppercase tracking-wider">Contact</span>
+              <h2 className="text-4xl sm:text-5xl font-bold mt-4 text-white">
+                Let's Work Together
+              </h2>
+              <p className="text-blue-100 mt-4 max-w-2xl mx-auto">
+                I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="grid md:grid-cols-2 gap-6"
+            >
+              <motion.a
+                href="mailto:prashant047alg@gmail.com"
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20 transition-all"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-xl bg-white/20">
+                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">Email</h3>
+                    <p className="text-blue-100 text-sm">prashant047alg@gmail.com</p>
                   </div>
                 </div>
-            </div>
-            ))}
-        </div>
-      </motion.section>
+              </motion.a>
 
-        <motion.section {...fadeUp} id="certifications" className="flex flex-col gap-8">
-          <div>
-            <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Certifications</span>
-            <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Continuous learning & credentials.</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-300">
-              Hands-on training and coursework that sharpened my full-stack fundamentals and project delivery skills.
+              <motion.a
+                href="tel:+917818808311"
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20 transition-all"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-xl bg-white/20">
+                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">Phone</h3>
+                    <p className="text-blue-100 text-sm">+91 78188 08311</p>
+                  </div>
+                </div>
+              </motion.a>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="py-12 px-6 sm:px-8 border-t border-slate-800/50">
+          <div className="mx-auto max-w-7xl text-center">
+            <p className="text-slate-400 text-sm">
+              © {new Date().getFullYear()} Prashant Kumar. All rights reserved.
+            </p>
+            <p className="text-slate-500 text-xs mt-2">
+              Built with React, Tailwind CSS, and Framer Motion
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900/70">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Full Stack Web Development</h3>
-                <svg className="h-5 w-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M4 6h16M4 6v12h16V6M4 6l8 7 8-7" />
-                </svg>
-        </div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-300">Love Babbar — Web Development Course</p>
-              <p className="text-xs uppercase tracking-widest text-blue-500">Issued 2024</p>
-              <p className="text-sm leading-6 text-slate-500 dark:text-slate-300">
-                Completed an industry-focused full stack curriculum covering MERN architecture, authentication, deployment workflows, and real-world project delivery.
-              </p>
-              <a
-                href="https://drive.google.com/file/d/14mpyAomABZ1IbjCpGNSRiCHtxQuC0MTi/view"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow transition hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400"
-              >
-                View certificate
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M7 17 17 7M7 7h10v10" />
-                </svg>
-              </a>
-            </div>
-        </div>
-      </motion.section>
-
-        <motion.section {...fadeUp} id="contact" className="rounded-3xl border border-slate-200 bg-white/80 p-10 shadow-xl backdrop-blur dark:border-slate-700 dark:bg-slate-900/70">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl">
-              <span className="text-xs uppercase tracking-[0.3em] text-blue-500">Availability</span>
-              <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">
-                Ready to collaborate on your next release cycle.
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-300">
-                I work with startups, product teams, and founders to build or scale web products. Share your roadmap—let’s align on scope, outcomes, and ship dates.
-              </p>
-            </div>
-            <div className="flex flex-col gap-4 text-sm text-slate-600 dark:text-slate-300">
-              <a
-                href="mailto:prashant047alg@gmail.com"
-                className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/70 px-5 py-3 font-medium shadow-sm transition hover:border-blue-400 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900/60 dark:hover:border-blue-400 dark:hover:text-blue-300"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M4 6h16M4 6v12h16V6M4 6l8 7 8-7" />
-                </svg>
-                prashant047alg@gmail.com
-              </a>
-              <a
-                href="tel:+917818808311"
-                className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/70 px-5 py-3 font-medium shadow-sm transition hover:border-blue-400 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900/60 dark:hover:border-blue-400 dark:hover:text-blue-300"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M4 5a2 2 0 0 1 2-2h1.28a1.5 1.5 0 0 1 1.37.93l1 2.4a1.5 1.5 0 0 1-.34 1.65l-1.01 1.01a13 13 0 0 0 5.18 5.18l1.01-1.01a1.5 1.5 0 0 1 1.65-.34l2.4 1a1.5 1.5 0 0 1 .93 1.37V19a2 2 0 0 1-2 2h-.75C9.55 21 3 14.45 3 6.75V6" />
-                </svg>
-                +91 78188 08311
-              </a>
-            </div>
-        </div>
-      </motion.section>
-
-        <footer className="flex flex-col items-center gap-2 text-center text-xs text-slate-400 dark:text-slate-500">
-          <p>© {new Date().getFullYear()} Prashant Kumar. Crafted with purpose, performance, and polish.</p>
-          <p>Available for remote-first collaborations across time zones.</p>
         </footer>
       </main>
     </div>
